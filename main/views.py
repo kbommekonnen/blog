@@ -6,6 +6,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from .forms import RegisterForm, SubjectForm, CourseForm
 from .models import Course, Subject
 from django.core.files.storage import FileSystemStorage
+from django.views.decorators.csrf import csrf_exempt
+
 def index(request):
       return render(request, 'navbar.html', {})
 
@@ -48,18 +50,18 @@ def upload_subject(request):
                   messages.success(request, "new subject is uploaded") 
             messages.error(request, "Invalid input")
       return render(request=request, template_name='subject.html')
+
+@csrf_exempt
 def course_upload(request):
       course = Course.objects.all()
       subject = Subject.objects.all()
       instructor = User.objects.all()
       context = {'course': course, 'subject':subject, 'instructor': instructor}
       if request.method == 'POST':
-            form = CourseForm(request.POST, instance=User)
-            print(request.POST)
+            form = CourseForm(request.POST)
             if form.is_valid():
-                  form.save(commit=False)
-                  form.instructor = User.objects.get(username = request.POST.get('instructor')).values()
-                  form.subject = Subject.objects.get(title = request.POST.get('subject')).values()
+                  form.instance.instructor = User.objects.get(username = request.POST.get('instructor'))
+                  form.instance.subject = Subject.objects.get(title = request.POST.get('subject'))
                   form.save()
                   messages.success(request, "course is uploaded successfully!! thanks")
             messages.error(request, "Invalid Input form")

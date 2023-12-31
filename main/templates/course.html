@@ -7,9 +7,21 @@
             {{courses}}
       {%endfor%}
       {% endif%}
+      
+      {% if form.errors %}
+      <div class="alert alert-danger">
+      <strong>Error!</strong> Please correct the following errors:
+      <ul>
+      {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+            <li>{{ field }}: {{ error }}</li>
+            {% endfor %}
+      {% endfor %}
+      </ul>
+      </div>
+      {% endif %}
 </div>
-<form method="post" action="">
-      {% csrf_token %}
+<form method="POST" action="">
       <div class="relative  flex flex-col text-gray-700 bg-white shadow-md w-96 mx-auto mt-10 rounded-xl
 	 bg-clip-border">
             <div
