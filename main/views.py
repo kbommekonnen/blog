@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
@@ -9,7 +9,10 @@ from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
-      return render(request, 'navbar.html', {})
+      # return HttpResponse({'text is from django'})
+      return render(request, 'customCard.html', {})
+def view_gallery(request):
+      return render(request, 'gallery.html')
 
 def register_request(request):
       
@@ -35,6 +38,7 @@ def login_request(request):
                   if user is not None:
                         login(request, user)
                         messages.success(request, "user is logged in")
+                        return HttpResponse({'data': "user is Logged in successfully!!!"})
                   else:
                         messages.error(request, "invalid username or password try again")
             else:
@@ -53,18 +57,12 @@ def upload_subject(request):
 
 @csrf_exempt
 def course_upload(request):
-      course = Course.objects.all()
-      subject = Subject.objects.all()
-      instructor = User.objects.all()
-      context = {'course': course, 'subject':subject, 'instructor': instructor}
       if request.method == 'POST':
             form = CourseForm(request.POST)
             if form.is_valid():
-                  form.instance.instructor = User.objects.get(username = request.POST.get('instructor'))
-                  form.instance.subject = Subject.objects.get(title = request.POST.get('subject'))
                   form.save()
                   messages.success(request, "course is uploaded successfully!! thanks")
             messages.error(request, "Invalid Input form")
-            return render(request=request, template_name='course.html', context=context )
       else:
-            return render(request=request, template_name='course.html', context=context )
+            form = CourseForm()
+      return render(request, 'course.html', {'form': form})

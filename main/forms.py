@@ -32,3 +32,17 @@ class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
         fields =['title', 'instructor', 'subject', 'slug', 'overview']
+
+    widgets = {
+        'title': forms.TextInput(attrs={"class":"form-control"}),
+        'instructor': forms.Select(attrs={"class":"form-control"}),
+        'subject': forms.Select(attrs={"class":"form-control"}),
+        'slug': forms.Textarea(attrs={"class":"form-control"}),
+        'overview': forms.TextInput(attrs={"class":"form-control"}),
+    }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['instructor'].queryset = User.objects.all()
+        self.fields['subject'].queryset = Subject.objects.all()
+        

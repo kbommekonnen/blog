@@ -7,4 +7,5 @@ urlpatterns = [
       path('signin', views.login_request, name="signin"),
       path('subject', views.upload_subject, name="upload_subject"),
       path('course', views.course_upload, name="course_upload"),
+      path('gallery', views.view_gallery, name="view_gallery"),
 ]

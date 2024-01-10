@@ -40,9 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tailwind',
     'main.apps.MainConfig',
+    'blog.apps.BlogConfig',
+    "widget_tweaks",
+    "corsheaders",
     ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,6 +56,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# CORS_ALLOWED_ORIGINS = [
+#     "http://127.0.0.1:3000",
+# ]
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',  # Add the origin of your frontend application
+]
+
+CORS_ORIGIN_ALLOW_ALL = True 
 
 TEMPLATES = [
     {
