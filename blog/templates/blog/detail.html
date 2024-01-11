@@ -4,12 +4,13 @@
 
 
 {% block page_title %}
-    <h2>{{ post.title }}</h2>
+    <h1 class="italic text-4xl mx-auto py-1">{{ post.title }}</h1>
 {% endblock page_title %}
 
 {% block page_content %}
-<div class="grid md:grid-cols-3">
-    <div class="mx-auto p-5">
+<hr>
+<div class="grid md:grid-cols-3 mx-auto">
+    <div class="ml-4 p-5   card border rounded bg-white ">
         <h1>Details of blog</h1>
         <p>{{ post.body  }}</p>
     </div>
@@ -19,7 +20,6 @@
         <form method="post">
             {% csrf_token %}
             {% include 'blog/comment_blog.html'%}
-            
         </form>
     </div>
 </div>
